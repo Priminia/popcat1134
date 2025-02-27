@@ -77,6 +77,14 @@
 <script>
     // 1. 計數器初始化
     let count = 0;
+    // 用 javascript 預載張嘴圖片 op.png
+    const opImg = new Image();
+    opImg.src = 'imgs/op.png';
+    // 用 javascript 預載pop1-4 mp3
+    for (let i = 1; i <= 4; i++) {
+        const audio = new Audio(`pops/pop${i}.mp3`);
+        audio.preload = 'auto';
+    }
     // 用 id 抓取 文字的 HTML 元素，顯示計數器的數字
     const catImg = document.getElementById('p');
     // 2. 寫一個function 計數器累加
@@ -89,15 +97,39 @@
         catImg.innerText = count;
     });
     // 當滑鼠按下，切換張嘴圖片，放開後再變回來
-    // 當滑鼠按下，播放 pops/pop1.mp3
+    // 當滑鼠按下，可以輪流播放 pop1,pop2,pop3,pop4 的 mp3
+    // 註冊滑鼠按下的時候，切換張嘴圖片
     catImg.addEventListener('mousedown', function () {
-        catImg.id = 'op';
+        catImg.style.backgroundImage = `url(${opImg.src})`;
+        // 隨機播放 pops/pop1-4.mp3
+        const audio = new Audio(`pops/pop${Math.floor(Math.random() * 4) + 1}.mp3`);
+        audio.play();
+    });
+    // 註冊滑鼠放開的時候，切換回來
+    // 滑鼠放開後，等待 25 毫秒，再切回閉嘴圖片
+    catImg.addEventListener('mouseup', function () {
+        setTimeout(() => {
+            catImg.style.backgroundImage = `url('imgs/p.png')`;
+        }, 25);
+    });
+    // 除了滑鼠，也可以用鍵盤互動
+    // 註冊鍵盤按下的時候，更新計數器的顯示
+    document.addEventListener('keydown', function () {
+        add();
+        catImg.innerText = count;
+    });
+    // 註冊鍵盤按下的時候，切換張嘴圖片
+    document.addEventListener('keydown', function () {
+        catImg.style.backgroundImage = `url(${opImg.src})`;
+        // 播放 pops/pop1.mp3
         const audio = new Audio('pops/pop1.mp3');
         audio.play();
     });
-    catImg.addEventListener('mouseup', function () {
-        catImg.id = 'p';
+    // 註冊鍵盤放開的時候，切換回來
+    document.addEventListener('keyup', function () {
+        catImg.style.backgroundImage = `url('imgs/p.png')`;
     });
+
 </script>
 
 
