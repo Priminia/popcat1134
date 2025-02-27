@@ -66,12 +66,39 @@
         height: 100%;
     }
 </style>
+
 <body>
 <!--新增容器去包裹標題圖片與點擊數-->
 <div class="container">
     <img class="title" src="imgs/popcat.svg" alt="POPCAT">
     <div class="cat-img" id="p">0</div>
 </div>
+
+<script>
+    // 1. 計數器初始化
+    let count = 0;
+    // 用 id 抓取 文字的 HTML 元素，顯示計數器的數字
+    const catImg = document.getElementById('p');
+    // 2. 寫一個function 計數器累加
+    function add() {
+        count++;
+    }
+    // 註冊滑鼠按下的時候，更新計數器的顯示
+    catImg.addEventListener('mousedown', function () {
+        add();
+        catImg.innerText = count;
+    });
+    // 當滑鼠按下，切換張嘴圖片，放開後再變回來
+    // 當滑鼠按下，播放 pops/pop1.mp3
+    catImg.addEventListener('mousedown', function () {
+        catImg.id = 'op';
+        const audio = new Audio('pops/pop1.mp3');
+        audio.play();
+    });
+    catImg.addEventListener('mouseup', function () {
+        catImg.id = 'p';
+    });
+</script>
 
 
 </body>
